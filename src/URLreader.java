@@ -22,7 +22,7 @@ public class URLreader {
         BufferedReader in = new BufferedReader(new InputStreamReader(this.URL.openStream()));
 
         while ((inputLine = in.readLine()) != null){
-            HTML=HTML+inputLine;
+            HTML=HTML+inputLine+"\n";
         }
         in.close();
         return HTML;
