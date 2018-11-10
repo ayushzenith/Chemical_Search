@@ -8,5 +8,8 @@
  * @time: 6:03 PM
  */
 public class StringLogic {
+    private String elementName;
+    private String molecularFormula;
+    private String molecularWeight;
 
 }
