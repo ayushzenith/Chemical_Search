@@ -11,13 +11,15 @@ import java.io.*;
  * @time: 6:03 PM
  */
 public class StringLogic {
-    private String elementName;
+    private String compoundName;
     private String molecularFormula;
     private String molecularWeight;
     private int CID;
 
     public StringLogic() {
     }
+
+    //Returns the CID of the compound given the CID of the compound
     public int getCID(int cid) throws IOException {
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
         URL url = new URL(string);
@@ -29,12 +31,14 @@ public class StringLogic {
         this.CID = Integer.parseInt(stringCid);
         return CID;
     }
-    public int getCID(String elementName) throws IOException {
-        if (elementName.indexOf(' ')!=-1){
-            elementName=elementName.replaceAll(" ", "_");
+
+    //Returns the CID of the compound with the given name or molecular formula
+    public int getCID(String compound) throws IOException {
+        if (compound.indexOf(' ')!=-1){
+            compound=compound.replaceAll(" ", "_");
         }
 
-        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+elementName;
+        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+compound;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
 
