@@ -11,5 +11,6 @@ public class StringLogic {
     private String elementName;
     private String molecularFormula;
     private String molecularWeight;
+    private String CID;
 
 }

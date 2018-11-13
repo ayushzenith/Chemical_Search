@@ -30,7 +30,7 @@ public class URLreader {
 
     //tester
     public static void main(String[] args) throws IOException {
-        URL url = new URL("https://www.google.com/");
+        URL url = new URL("https://pubchem.ncbi.nlm.nih.gov/compound/carbon_dioxide");
         URLreader test = new URLreader(url);
         System.out.println(test.getHTML());
 
