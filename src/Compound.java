@@ -10,15 +10,36 @@ import java.io.*;
  * @date: 11/10/18
  * @time: 6:03 PM
  */
-public class StringLogic {
-    private String compoundName;
+public class Compound {
+    private String name;
     private String molecularFormula;
     private double molecularWeight;
     private int CID;
 
-    public StringLogic() {
+    public Compound() {
     }
 
+    //Constructor - CID in
+    public Compound(int CID) throws IOException{
+        this.CID = CID;
+        this.name = getCompoundName(CID);
+        this.molecularFormula = getMolecularFormula(CID);
+    }
+    //Constructor - Name in (version 1) - Molecular Formula in (version 2)
+    public Compound(String input, int version) throws IOException{
+        if (version==1) {
+            this.name = input;
+            this.CID = getCID(input);
+            this.molecularFormula = getMolecularFormula(input);
+        }
+        else if (version==2) {
+            this.name = getCompoundName(input);
+            this.molecularFormula = input;
+            this.CID = getCID(input);
+        }
+    }
+
+    
     //Returns the CID of the compound given the CID of the compound
     public int getCID(int cid) throws IOException {
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
@@ -58,8 +79,8 @@ public class StringLogic {
         int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
         int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
         String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
-        this.compoundName = stringName;
-        return this.compoundName;
+        this.name = stringName;
+        return this.name;
     }
 
     //Returns the compound name with the given formula
@@ -71,8 +92,8 @@ public class StringLogic {
         int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
         int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
         String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
-        this.compoundName = stringName;
-        return this.compoundName;
+        this.name = stringName;
+        return this.name;
     }
 
     //Returns the molecular formula with the given name
@@ -103,7 +124,7 @@ public class StringLogic {
 
     //tester
     public static void main(String[] args) throws IOException {
-        StringLogic test = new StringLogic();
+        Compound test = new Compound();
         System.out.println(test.getCompoundName(280));
         System.out.println(test.getCompoundName("C10H14N2"));
         System.out.println(test.getMolecularFormula("356"));
