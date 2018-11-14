@@ -55,10 +55,10 @@ public class StringLogic {
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
 
-        int cidPlacement = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
-        int cidPlacementEnd = urLreader.getHTML().indexOf(" |",cidPlacement+34);
-        String stringCid = urLreader.getHTML().substring(cidPlacement+34,cidPlacementEnd).trim();
-        this.compoundName = stringCid;
+        int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
+        int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
+        String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
+        this.compoundName = stringName;
         return this.compoundName;
     }
 
@@ -68,10 +68,10 @@ public class StringLogic {
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
 
-        int cidPlacement = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
-        int cidPlacementEnd = urLreader.getHTML().indexOf(" |",cidPlacement+34);
-        String stringCid = urLreader.getHTML().substring(cidPlacement+34,cidPlacementEnd).trim();
-        this.compoundName = stringCid;
+        int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
+        int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
+        String nameString = urLreader.getHTML().substring(name+34,nameEnd).trim();
+        this.compoundName = nameString;
         return this.compoundName;
     }
 
@@ -79,7 +79,7 @@ public class StringLogic {
     public static void main(String[] args) throws IOException {
         StringLogic test = new StringLogic();
         System.out.println(test.getCompoundName(280));
-        System.out.println(test.getCID("Carbon dioxide"));
+        System.out.println(test.getCompoundName("CO2"));
 
     }
 
