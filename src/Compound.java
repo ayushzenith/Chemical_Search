@@ -13,7 +13,6 @@ import java.io.*;
 public class Compound {
     private String name;
     private String molecularFormula;
-    private double molecularWeight;
     private int CID;
 
     public Compound() {
@@ -25,35 +24,14 @@ public class Compound {
         this.name = getCompoundName(CID);
         this.molecularFormula = getMolecularFormula(CID);
     }
-    //Constructor - Name in (version 1) - Molecular Formula in (version 2)
-    public Compound(String input, int version) throws IOException{
-        if (version==1) {
-            this.name = input;
-            this.CID = getCID(input);
-            this.molecularFormula = getMolecularFormula(input);
-        }
-        else if (version==2) {
-            this.name = getCompoundName(input);
-            this.molecularFormula = input;
-            this.CID = getCID(input);
-        }
+    //Constructor - Name in
+    public Compound(String input) throws IOException{
+        this.name = input;
+        this.CID = getCID(input);
+        this.molecularFormula = getMolecularFormula(input);
     }
 
-    
-    //Returns the CID of the compound given the CID of the compound
-    public int getCID(int cid) throws IOException {
-        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
-        URL url = new URL(string);
-        URLreader urLreader = new URLreader(url);
-
-        int cidPlacement = urLreader.getHTML().indexOf("CID");
-        int cidPlacementEnd = urLreader.getHTML().indexOf(" ",cidPlacement+4);
-        String stringCid = urLreader.getHTML().substring(cidPlacement+3,cidPlacementEnd).trim();
-        this.CID = Integer.parseInt(stringCid);
-        return CID;
-    }
-
-    //Returns the CID of the compound with the given name or molecular formula
+    //Returns the CID of the compound with the given name
     public int getCID(String compound) throws IOException {
         if (compound.indexOf(' ')!=-1){
             compound=compound.replaceAll(" ", "_");
@@ -73,19 +51,6 @@ public class Compound {
     //Returns the compound name with the given CID
     public String getCompoundName(int cid) throws IOException{
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
-        URL url = new URL(string);
-        URLreader urLreader = new URLreader(url);
-
-        int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
-        int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
-        String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
-        this.name = stringName;
-        return this.name;
-    }
-
-    //Returns the compound name with the given formula
-    public String getCompoundName(String molecularFormula) throws IOException{
-        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+molecularFormula;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
 
@@ -122,12 +87,13 @@ public class Compound {
         return this.molecularFormula;
     }
 
+    public String toString() {
+        return name + "\n" + CID + "\n"+ molecularFormula;
+    }
+
     //tester
     public static void main(String[] args) throws IOException {
-        Compound test = new Compound();
-        System.out.println(test.getCompoundName(280));
-        System.out.println(test.getCompoundName("C10H14N2"));
-        System.out.println(test.getMolecularFormula("356"));
+
     }
 
 }
