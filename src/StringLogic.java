@@ -13,7 +13,7 @@ import java.io.*;
 public class StringLogic {
     private String compoundName;
     private String molecularFormula;
-    private String molecularWeight;
+    private double molecularWeight;
     private int CID;
 
     public StringLogic() {
@@ -48,10 +48,39 @@ public class StringLogic {
         this.CID = Integer.parseInt(stringCid);
         return CID;
     }
+
+    //Returns the compound name with the given CID
+    public String getCompoundName(int cid) throws IOException{
+        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+
+        int cidPlacement = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
+        int cidPlacementEnd = urLreader.getHTML().indexOf(" |",cidPlacement+34);
+        String stringCid = urLreader.getHTML().substring(cidPlacement+34,cidPlacementEnd).trim();
+        this.compoundName = stringCid;
+        return this.compoundName;
+    }
+
+    //Returns the compound name with the given formula
+    public String getCompoundName(String molecularFormula) throws IOException{
+        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+molecularFormula;
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+
+        int cidPlacement = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
+        int cidPlacementEnd = urLreader.getHTML().indexOf(" |",cidPlacement+34);
+        String stringCid = urLreader.getHTML().substring(cidPlacement+34,cidPlacementEnd).trim();
+        this.compoundName = stringCid;
+        return this.compoundName;
+    }
+
     //tester
     public static void main(String[] args) throws IOException {
         StringLogic test = new StringLogic();
-        System.out.println(test.getCID("2,2,4-Trimethylpentane"));
+        System.out.println(test.getCompoundName(280));
+        System.out.println(test.getCID("Carbon dioxide"));
+
     }
 
 }
