@@ -70,17 +70,43 @@ public class StringLogic {
 
         int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
         int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
-        String nameString = urLreader.getHTML().substring(name+34,nameEnd).trim();
-        this.compoundName = nameString;
+        String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
+        this.compoundName = stringName;
         return this.compoundName;
+    }
+
+    //Returns the molecular formula with the given name
+    public String getMolecularFormula(String name) throws IOException{
+        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+name;
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+
+        int formula = urLreader.getHTML().indexOf("|");
+        int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
+        String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+        this.molecularFormula = molecularFormula;
+        return this.molecularFormula;
+    }
+
+    //Returns the molecular formula with the given CID
+    public String getMolecularFormula(int cid) throws IOException{
+        String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+
+        int formula = urLreader.getHTML().indexOf("|");
+        int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
+        String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+        this.molecularFormula = molecularFormula;
+        return this.molecularFormula;
     }
 
     //tester
     public static void main(String[] args) throws IOException {
         StringLogic test = new StringLogic();
         System.out.println(test.getCompoundName(280));
-        System.out.println(test.getCompoundName("CO2"));
-
+        System.out.println(test.getCompoundName("C6H12O6"));
+        System.out.println(test.getMolecularFormula("356"));
     }
 
 }
