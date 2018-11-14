@@ -105,7 +105,7 @@ public class StringLogic {
     public static void main(String[] args) throws IOException {
         StringLogic test = new StringLogic();
         System.out.println(test.getCompoundName(280));
-        System.out.println(test.getCompoundName("C6H12O6"));
+        System.out.println(test.getCompoundName("C10H14N2"));
         System.out.println(test.getMolecularFormula("356"));
     }
 
