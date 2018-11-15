@@ -14,6 +14,7 @@ public class Compound {
     private String name;
     private String molecularFormula;
     private int CID;
+    private double molecularWeight;
 
     public Compound() {
     }
@@ -23,16 +24,34 @@ public class Compound {
         this.CID = CID;
         this.name = getCompoundName(CID);
         this.molecularFormula = getMolecularFormula(CID);
+        this.molecularWeight = getMolecularWeight(CID);
     }
     //Constructor - Name in
-    public Compound(String input) throws IOException{
-        this.name = input;
-        this.CID = getCID(input);
-        this.molecularFormula = getMolecularFormula(input);
+    public Compound(String name) throws IOException{
+        this.name = name;
+        this.CID = getCID(name);
+        this.molecularFormula = getMolecularFormula(name);
+        this.molecularWeight = getMolecularWeight(name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMolecularFormula() {
+        return molecularFormula;
+    }
+
+    public int getCID() {
+        return CID;
+    }
+
+    public double getMolecularWeight() {
+        return molecularWeight;
     }
 
     //Returns the CID of the compound with the given name
-    public int getCID(String compound) throws IOException {
+    private int getCID(String compound) throws IOException {
         if (compound.indexOf(' ')!=-1){
             compound=compound.replaceAll(" ", "_");
         }
@@ -49,7 +68,7 @@ public class Compound {
     }
 
     //Returns the compound name with the given CID
-    public String getCompoundName(int cid) throws IOException{
+    private String getCompoundName(int cid) throws IOException{
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
@@ -62,7 +81,7 @@ public class Compound {
     }
 
     //Returns the molecular formula with the given name
-    public String getMolecularFormula(String name) throws IOException{
+    private String getMolecularFormula(String name) throws IOException{
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+name;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
@@ -75,7 +94,7 @@ public class Compound {
     }
 
     //Returns the molecular formula with the given CID
-    public String getMolecularFormula(int cid) throws IOException{
+    private String getMolecularFormula(int cid) throws IOException{
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
@@ -87,13 +106,44 @@ public class Compound {
         return this.molecularFormula;
     }
 
+    private double getMolecularWeight(int cid) throws IOException{
+        String string = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/"+cid+"/XML/?response_type=display";
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+        System.out.println(urLreader.getHTML());
+
+        int number = urLreader.getHTML().indexOf("Molecular Weight");
+        int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
+        int number3 = urLreader.getHTML().indexOf("</NumValue>",number);
+        String molecularWeight = urLreader.getHTML().substring(number2+10,number3).trim();
+        this.molecularWeight = Double.parseDouble(molecularWeight);
+        return this.molecularWeight;
+    }
+
+    private double getMolecularWeight(String name) throws IOException{
+        int cid = getCID(name);
+        String string = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/"+cid+"/XML/?response_type=display";
+
+        URL url = new URL(string);
+        URLreader urLreader = new URLreader(url);
+        System.out.println(urLreader.getHTML());
+
+        int number = urLreader.getHTML().indexOf("Molecular Weight");
+        int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
+        int number3 = urLreader.getHTML().indexOf("</NumValue>",number);
+        String molecularWeight = urLreader.getHTML().substring(number2+10,number3).trim();
+        this.molecularWeight = Double.parseDouble(molecularWeight);
+        return this.molecularWeight;
+    }
+
     public String toString() {
-        return name + "\n" + CID + "\n"+ molecularFormula;
+        return name + "\n" + CID + "\n"+ molecularFormula + "\n" + molecularWeight;
     }
 
     //tester
     public static void main(String[] args) throws IOException {
-
+        Compound test = new Compound(280);
+        System.out.println(test);
     }
 
 }

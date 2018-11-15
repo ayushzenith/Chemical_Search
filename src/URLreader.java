@@ -23,6 +23,7 @@ public class URLreader {
 
         while ((inputLine = in.readLine()) != null){
             HTML=HTML+inputLine+"\n";
+            System.out.println(inputLine);
         }
         in.close();
         return HTML;
@@ -30,7 +31,7 @@ public class URLreader {
 
     //tester
     public static void main(String[] args) throws IOException {
-        URL url = new URL("https://pubchem.ncbi.nlm.nih.gov/compound/carbon_dioxide");
+        URL url = new URL("https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/280/XML/?response_type=display");
         URLreader test = new URLreader(url);
         System.out.println(test.getHTML());
 
