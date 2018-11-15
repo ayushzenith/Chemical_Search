@@ -10,17 +10,17 @@ import java.util.Scanner;
  * @date: 11/15/18
  * @time: 6:12 PM
  */
-public class Main {
+public class Interface {
     public static void main(String[] args) throws IOException {
-        System.out.println("WeLcOmE to cHeMiCaL SeArcH using PUBCHEM");
+        System.out.println("Welcome to the Molecular Compound Dictionary using PUBCHEM");
         Scanner reader = new Scanner(System.in);
-        String input = null;
         while (true){
             System.out.println("Please enter Compound Name or cid number or Exit to quit:");
-            input = reader.nextLine();
+            String input = reader.nextLine();
             if (input.equals("Exit")||input.equals("exit")){
                 break;
             }
+            System.out.println("Working...");
             try {
                 int CID = Integer.parseInt(input);
                 Compound Cid = new Compound(CID);

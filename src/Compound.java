@@ -191,13 +191,6 @@ public class Compound {
     }
 
     public String toString() {
-        return "Compound: " + name + "\n" + "CID#: " + CID + "\n"+ "Molecular Formula: " + molecularFormula + "\n" + "Molecular Weight: " + molecularWeight+"g/mol";
+        return "Compound: " + name + "\n" + "CID#: " + CID + "\n"+ "Molecular Formula: " + molecularFormula + "\n" + "Molecular Weight: " + molecularWeight+" g/mol";
     }
-
-    //tester
-    public static void main(String[] args) throws IOException {
-        Compound test = new Compound("Carbon Dioxide");
-        System.out.println(test);
-    }
-
 }
