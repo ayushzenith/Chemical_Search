@@ -23,7 +23,6 @@ public class URLreader {
 
         while ((inputLine = in.readLine()) != null){
             HTML=HTML+inputLine+"\n";
-            System.out.println(inputLine);
         }
         in.close();
         return HTML;

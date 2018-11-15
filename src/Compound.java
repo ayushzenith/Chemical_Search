@@ -82,6 +82,10 @@ public class Compound {
 
     //Returns the molecular formula with the given name
     private String getMolecularFormula(String name) throws IOException{
+        if (name.indexOf(' ')!=-1){
+            name=name.replaceAll(" ", "_");
+        }
+
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+name;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
@@ -89,6 +93,32 @@ public class Compound {
         int formula = urLreader.getHTML().indexOf("|");
         int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
         String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+
+        String y = null;
+        for (int x = molecularFormula.length(); x>0; x--){
+            y=Character.toString(molecularFormula.charAt(x-1));
+            if (y.equals("1")){
+                molecularFormula=molecularFormula.replaceAll("1", "₁");
+            }else if (y.equals("2")){
+                molecularFormula=molecularFormula.replaceAll("2", "₂");
+            }else if (y.equals("3")){
+                molecularFormula=molecularFormula.replaceAll("3", "₃");
+            }else if (y.equals("4")){
+                molecularFormula=molecularFormula.replaceAll("4", "₄");
+            }else if (y.equals("5")){
+                molecularFormula=molecularFormula.replaceAll("5", "₅");
+            }else if (y.equals("6")){
+                molecularFormula=molecularFormula.replaceAll("6", "₆");
+            }else if (y.equals("7")){
+                molecularFormula=molecularFormula.replaceAll("7", "₇");
+            }else if (y.equals("8")){
+                molecularFormula=molecularFormula.replaceAll("8", "₈");
+            }else if (y.equals("9")){
+                molecularFormula=molecularFormula.replaceAll("9", "₉");
+            }else if (y.equals("0")){
+                molecularFormula = molecularFormula.replaceAll("0", "₀");
+            }
+        }
         this.molecularFormula = molecularFormula;
         return this.molecularFormula;
     }
@@ -102,6 +132,31 @@ public class Compound {
         int formula = urLreader.getHTML().indexOf("|");
         int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
         String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+        String y = null;
+        for (int x = molecularFormula.length(); x>0; x--){
+            y=Character.toString(molecularFormula.charAt(x-1));
+            if (y.equals("1")){
+                molecularFormula=molecularFormula.replaceAll("1", "₁");
+            }else if (y.equals("2")){
+                molecularFormula=molecularFormula.replaceAll("2", "₂");
+            }else if (y.equals("3")){
+                molecularFormula=molecularFormula.replaceAll("3", "₃");
+            }else if (y.equals("4")){
+                molecularFormula=molecularFormula.replaceAll("4", "₄");
+            }else if (y.equals("5")){
+                molecularFormula=molecularFormula.replaceAll("5", "₅");
+            }else if (y.equals("6")){
+                molecularFormula=molecularFormula.replaceAll("6", "₆");
+            }else if (y.equals("7")){
+                molecularFormula=molecularFormula.replaceAll("7", "₇");
+            }else if (y.equals("8")){
+                molecularFormula=molecularFormula.replaceAll("8", "₈");
+            }else if (y.equals("9")){
+                molecularFormula=molecularFormula.replaceAll("9", "₉");
+            }else if (y.equals("0")){
+                molecularFormula = molecularFormula.replaceAll("0", "₀");
+            }
+        }
         this.molecularFormula = molecularFormula;
         return this.molecularFormula;
     }
@@ -110,7 +165,6 @@ public class Compound {
         String string = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/"+cid+"/XML/?response_type=display";
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
-        System.out.println(urLreader.getHTML());
 
         int number = urLreader.getHTML().indexOf("Molecular Weight");
         int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
@@ -126,7 +180,7 @@ public class Compound {
 
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
-        System.out.println(urLreader.getHTML());
+
 
         int number = urLreader.getHTML().indexOf("Molecular Weight");
         int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
@@ -137,12 +191,12 @@ public class Compound {
     }
 
     public String toString() {
-        return name + "\n" + CID + "\n"+ molecularFormula + "\n" + molecularWeight;
+        return "Compound: " + name + "\n" + "CID#: " + CID + "\n"+ "Molecular Formula: " + molecularFormula + "\n" + "Molecular Weight: " + molecularWeight+"g/mol";
     }
 
     //tester
     public static void main(String[] args) throws IOException {
-        Compound test = new Compound(280);
+        Compound test = new Compound("Carbon Dioxide");
         System.out.println(test);
     }
 
