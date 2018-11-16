@@ -25,8 +25,8 @@ public class Compound {
     }
     //Constructor - Name in
     public Compound(String name) throws IOException{
-        this.name = name;
         this.CID = getCID(name);
+        this.name = getCompoundName(getCID(name));
         this.molecularFormula = getMolecularFormula(name);
         this.molecularWeight = getMolecularWeight(name);
     }
