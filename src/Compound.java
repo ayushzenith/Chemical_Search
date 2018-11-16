@@ -56,14 +56,18 @@ public class Compound {
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+compound;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Searches for the mention of CID and records the index number
-        int cidPlacement = urLreader.getHTML().indexOf("CID");
+        int cidPlacement = HTML.indexOf("CID");
         //Searches for the first space after the CID mention
-        int cidPlacementEnd = urLreader.getHTML().indexOf(" ",cidPlacement+4);
+        int cidPlacementEnd = HTML.indexOf(" ",cidPlacement+4);
         //Substrings the CID number using the CID index and the space index
-        String stringCid = urLreader.getHTML().substring(cidPlacement+3,cidPlacementEnd).trim();
+        String stringCid = HTML.substring(cidPlacement+3,cidPlacementEnd).trim();
         //Converts CID from a String to an int and returns it
+        if (stringCid.equals("A\"")||stringCid.equals("ll<?xml")) {
+            return -1;
+        }
         this.CID = Integer.parseInt(stringCid);
         return CID;
     }
@@ -74,13 +78,14 @@ public class Compound {
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Searches the HTML for the section of code directly in front of the location of the compound name
-        int name = urLreader.getHTML().indexOf("<meta name=\"description\" content=\"");
+        int name = HTML.indexOf("<meta name=\"description\" content=\"");
         //Searches for the character directly after the compound name in the HTML code
-        int nameEnd = urLreader.getHTML().indexOf(" |",name+34);
+        int nameEnd = HTML.indexOf(" |",name+34);
         //Substrings the Compound Name using the indexes received above and returns it
-        String stringName = urLreader.getHTML().substring(name+34,nameEnd).trim();
+        String stringName = HTML.substring(name+34,nameEnd).trim();
         this.name = stringName;
         return this.name;
     }
@@ -90,18 +95,19 @@ public class Compound {
     private String getMolecularFormula(String name) throws IOException{
         //Checks and removes any spaces from the inputted name
         if (name.indexOf(' ')!=-1){
-            name=name.replaceAll(" ", "_");
+            name = name.replaceAll(" ", "_");
         }
 
         //Creates URL from the modified compound name
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+name;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Finds indexes of the character before and the character after the chemical formula and uses those to substring
-        int formula = urLreader.getHTML().indexOf("|");
-        int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
-        String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+        int formula = HTML.indexOf("|");
+        int formulaEnd = HTML.indexOf(" ",formula+2);
+        String molecularFormula = HTML.substring(formula+2,formulaEnd).trim();
 
         //Checks for numbers and reformats them as subscript
         for (int x = molecularFormula.length(); x>0; x--){
@@ -139,11 +145,12 @@ public class Compound {
         String string = "https://pubchem.ncbi.nlm.nih.gov/compound/"+cid;
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Finds the index of the characters before and after the molecualr formula and substrings the molecular formula
-        int formula = urLreader.getHTML().indexOf("|");
-        int formulaEnd = urLreader.getHTML().indexOf(" ",formula+2);
-        String molecularFormula = urLreader.getHTML().substring(formula+2,formulaEnd).trim();
+        int formula = HTML.indexOf("|");
+        int formulaEnd = HTML.indexOf(" ",formula+2);
+        String molecularFormula = HTML.substring(formula+2,formulaEnd).trim();
 
         //Checks and reformats numbers to subscript
         for (int x = molecularFormula.length(); x>0; x--){
@@ -182,12 +189,13 @@ public class Compound {
         String string = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/"+cid+"/XML/?response_type=display";
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Finds the indexes of the HTML flags that encompasses the Molecular Weight and substrings the molecular weight
-        int number = urLreader.getHTML().indexOf("Molecular Weight");
-        int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
-        int number3 = urLreader.getHTML().indexOf("</NumValue>",number);
-        String molecularWeight = urLreader.getHTML().substring(number2+10,number3).trim();
+        int number = HTML.indexOf("Molecular Weight");
+        int number2 = HTML.indexOf("<NumValue>",number);
+        int number3 = HTML.indexOf("</NumValue>",number);
+        String molecularWeight = HTML.substring(number2+10,number3).trim();
 
         //Passes the molecular weight into a double and returns it
         this.molecularWeight = Double.parseDouble(molecularWeight);
@@ -197,17 +205,21 @@ public class Compound {
     private double getMolecularWeight(String name) throws IOException{
         //Converts the inputted name to the CID
         int cid = getCID(name);
+        if (cid==-1) {
+            return -1;
+        }
 
         //Creates URL with CID
         String string = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/"+cid+"/XML/?response_type=display";
         URL url = new URL(string);
         URLreader urLreader = new URLreader(url);
+        String HTML = urLreader.getHTML();
 
         //Finds and indexes the HTML Flags that encompasses the molecular weight and substrings the molecular weight
-        int number = urLreader.getHTML().indexOf("Molecular Weight");
-        int number2 = urLreader.getHTML().indexOf("<NumValue>",number);
-        int number3 = urLreader.getHTML().indexOf("</NumValue>",number);
-        String molecularWeight = urLreader.getHTML().substring(number2+10,number3).trim();
+        int number = HTML.indexOf("Molecular Weight");
+        int number2 = HTML.indexOf("<NumValue>",number);
+        int number3 = HTML.indexOf("</NumValue>",number);
+        String molecularWeight = HTML.substring(number2+10,number3).trim();
 
         //Passes the molecular weight to a double and returns it
         this.molecularWeight = Double.parseDouble(molecularWeight);
@@ -216,6 +228,9 @@ public class Compound {
 
     //toString
     public String toString() {
+        if (name==null||CID==-1||molecularFormula==null||molecularWeight==-1) {
+            return "Unable to get data";
+        }
         return "Compound: " + name + "\n" + "CID#: " + CID + "\n"+ "Molecular Formula: " + molecularFormula + "\n" + "Molecular Weight: " + molecularWeight+" g/mol";
     }
 }
