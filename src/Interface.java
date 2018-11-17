@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Created by IntelliJ IDEA.
